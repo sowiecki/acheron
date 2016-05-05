@@ -3,10 +3,7 @@
 import WebSocket from 'ws';
 
 import { WEB_SOCKET_PORT } from '../config';
-import { EMIT_CLIENT_CONNECTED, EMIT_FLUSH_CLIENT } from '../ducks/clients';
-import { HANDSHAKE,
-         RECONNECTED,
-         NEW_ROOM_PING } from '../constants';
+import { HANDSHAKE, RECONNECTED } from '../constants';
 
 const wss = new WebSocket.Server({ port: WEB_SOCKET_PORT });
 
@@ -49,9 +46,7 @@ const socketController = {
         socketController.handle(message.event, message.payload, client);
       });
 
-      client.on('close', () => {
-        flushClient(client);
-      });
+      client.on('close', () => flushClient(client));
     });
   },
 
@@ -87,10 +82,6 @@ const socketController = {
 
       [RECONNECTED]() {
         registerClient(client);
-      },
-
-      [NEW_ROOM_PING]() { // Forward ping to GTFO
-
       },
 
       sendToAll() {

@@ -6,7 +6,6 @@ import applicationView from '../views/application';
 
 import { config } from '../environment';
 import { isProd } from '../config';
-import { MOCK_RESERVATIONS_API, MOCK_STALLS_API } from '../constants';
 
 const router = express.Router();
 
