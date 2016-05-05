@@ -18,7 +18,8 @@ const readFile = (fileName) => {
  * @returns {object} config, devices, markers, coordinates
  */
 const getEnvironment = () => {
-  const { config } = readFile('config.json');
+  // const { config } = readFile('config.json');
+  const config = {}; // TODO replace with env variables
 
   if (validator.validate(config, '/ConfigSchema').errors.length) {
     throw new FileValidationError('config');

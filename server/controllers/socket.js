@@ -2,10 +2,11 @@
 /* globals console */
 import WebSocket from 'ws';
 
-import { WEB_SOCKET_PORT } from '../config';
+import { CLIENT_WEB_SOCKET_PORT } from '../config';
 import { HANDSHAKE, RECONNECTED } from '../constants';
+import { getWebSocketKey } from '../utils';
 
-const wss = new WebSocket.Server({ port: WEB_SOCKET_PORT });
+const wss = new WebSocket.Server({ port: CLIENT_WEB_SOCKET_PORT });
 
 /**
  * Clients with active WebSocket connections.
@@ -16,7 +17,7 @@ const clients = {};
  * Deletes client from stored clients hash.
  * @param {object} client WebSocket properties for client.
  */
-const flushClient = (client) => delete clients[getOrigin(client)];
+const flushClient = (client) => delete clients[getWebSocketKey(client)];
 
 /**
  * Registers client with stored clients hash.

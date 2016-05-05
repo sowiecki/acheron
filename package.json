@@ -11,11 +11,14 @@
   "license": "MIT",
   "homepage": "https://bitbucket.org/seanowiecki/acheron#readme",
   "main": "application.js",
-  "node_test_paths": "./tests/server/**/*.spec.* ./tests/universal/**/*.spec.*",
   "scripts": {
     "start": "node ./application.js",
     "dev": "nodemon ./application.js",
     "lint": "eslint --format=node_modules/eslint-formatter-pretty --ext .js,.jsx *.js server"
+  },
+  "engines": {
+    "node" : "^6.0.0",
+    "npm" : "^3.8.6"
   },
   "dependencies": {
     "babel-loader": "^6.2.4",
