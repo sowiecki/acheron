@@ -8,8 +8,6 @@ export const isProd = process.env.NODE_ENV === 'production';
 export const isTest = process.env.NODE_ENV === 'test';
 
 export const SERVER_PORT = process.env.PORT || 5000;
-export const CLIENT_WEB_SOCKET_PORT = 5001;
-export const ACHERON_WEB_SOCKET_PORT = 5002;
 
 const ROOT = '../';
 export const PUBLIC_PATH = path.join(__dirname, ROOT, 'public');

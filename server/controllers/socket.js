@@ -6,7 +6,7 @@ import { CLIENT_WEB_SOCKET_PORT } from '../config';
 import { HANDSHAKE, RECONNECTED } from '../constants';
 import { getWebSocketKey } from '../utils';
 
-const wss = new WebSocket.Server({ port: CLIENT_WEB_SOCKET_PORT });
+// const wss = new WebSocket.Server({ port: CLIENT_WEB_SOCKET_PORT });
 
 /**
  * Clients with active WebSocket connections.
