@@ -1,10 +1,9 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 
-import { BUNDLE_PATH } from '../config';
 import fonts from '../assets/fonts';
 
-const Application = ({ bundle }) => {
+const Application = () => {
   const includeFont = (fontSource) => (
     <link key={fontSource} href={fontSource} rel='stylesheet' type='text/css'/>
   );
@@ -23,8 +22,6 @@ const Application = ({ bundle }) => {
   );
 };
 
-const applicationView = ReactDOMServer.renderToStaticMarkup(
-  <Application/>
-);
+const applicationView = ReactDOMServer.renderToStaticMarkup(<Application/>);
 
 export default applicationView;

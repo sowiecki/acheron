@@ -1,14 +1,13 @@
-import { find } from 'lodash';
-
 import socketController from './socket';
-import { NEW_ROOM_PING, PING_ERROR } from '../constants';
-import { getHost } from '../utils';
+import { NEW_ROOM_PING } from '../constants';
 
 const pingsController = {
   handlePing(req, res) {
-    const { payload } = req;
+    const { id, anchor } = req.headers;
 
-    socketController.handle(NEW_ROOM_PING, payload)
+    socketController.handle(NEW_ROOM_PING, { id, anchor });
+
+    res.json({ status: 200, message: `Ping received for ${id} at ${anchor}.` });
   }
 };
 

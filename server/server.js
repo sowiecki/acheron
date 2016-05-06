@@ -1,18 +1,14 @@
 /* eslint no-console:0 */
 /* globals console */
-import WebSocket from 'ws';
 import http from 'http';
 import express from 'express';
 import favicon from 'serve-favicon';
 import logger from 'morgan';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
-import colors from 'colors/safe';
 
-import { SERVER_PORT,
-         CLIENT_WEB_SOCKET_PORT,
-         PUBLIC_PATH,
-         VIEWS_PATH } from './config';
+import { SERVER_PORT, PUBLIC_PATH, VIEWS_PATH } from './config';
+import socketController from './controllers/socket';
 import routes from './routes';
 
 const app = express();
@@ -28,7 +24,6 @@ app.use('/', express.static(PUBLIC_PATH));
 app.use('/', routes);
 
 const server = http.createServer(app);
-const wss = new WebSocket.Server({ server });
 
 server.listen(SERVER_PORT, (err) => {
   if (err) {
@@ -39,17 +34,6 @@ server.listen(SERVER_PORT, (err) => {
   console.log(`Listening at http://localhost:${SERVER_PORT}`);
 });
 
-wss.on('connection', (ws) => {
-  const id = setInterval(() => {
-    ws.send(JSON.stringify(new Date()), () => {  });
-  }, 1000);
+socketController.initialize(server);
 
-  console.log('websocket connection open');
-
-  ws.on('close', () => {
-    console.log('websocket connection close');
-    clearInterval(id);
-  });
-});
-
-export default { server, wss };
+export default { server };

@@ -4,9 +4,6 @@ import express from 'express';
 import pingsController from '../controllers/pings';
 import applicationView from '../views/application';
 
-import { config } from '../environment';
-import { isProd } from '../config';
-
 const router = express.Router();
 
 /* Room pings */

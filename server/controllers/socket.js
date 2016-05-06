@@ -1,12 +1,10 @@
 /* eslint new-cap:0, no-console:0 */
 /* globals console */
 import WebSocket from 'ws';
+import { forEach } from 'lodash';
 
-import { CLIENT_WEB_SOCKET_PORT } from '../config';
 import { HANDSHAKE, RECONNECTED } from '../constants';
 import { getWebSocketKey } from '../utils';
-
-// const wss = new WebSocket.Server({ port: CLIENT_WEB_SOCKET_PORT });
 
 /**
  * Clients with active WebSocket connections.
@@ -22,24 +20,28 @@ const flushClient = (client) => delete clients[getWebSocketKey(client)];
 /**
  * Registers client with stored clients hash.
  * Overwrites clients from same origin.
- * @param {string} anchor Anchor key of client.
  * @param {object} client WebSocket properties for client.
  */
 const registerClient = (client) => {
-  const origin = getOrigin(client);
+  const origin = getWebSocketKey(client);
 
-  clients[origin] = Object.assign(client, { anchor });
+  clients[origin] = Object.assign(client);
 };
 
 const socketController = {
-  /**
-   * Sets up and initializes socket connection with client.
-   * @params{string} event Event constant for initial communication with client.
-   * @returns {undefined}
-   */
-  open(event, payload) {
-    wss.on('connection', (client) => {
-      socketController.send(event, payload, client); // Initialize with config
+  initialize(server) {
+    this.wss = new WebSocket.Server({ server });
+
+    this.open();
+  },
+
+  open() {
+    this.wss.on('connection', (client) => {
+      const initializePayload = {
+        message: `Acheron connection established at ${JSON.stringify(new Date())}`
+      };
+
+      socketController.send(HANDSHAKE, initializePayload, client);
 
       client.on('message', (data) => {
         const message = JSON.parse(data);
@@ -86,7 +88,7 @@ const socketController = {
       },
 
       sendToAll() {
-        clients.forEach((ws) => {
+        forEach(clients, (ws) => {
           socketController.send(event, payload, ws);
         });
       }
