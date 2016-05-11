@@ -19,4 +19,4 @@ Acheron is a WebSocket proxy built for the purpose for forwarding events trigger
 ```
 
 ### Getting started
-Deploy Acheron somewhere where it can accept HTTP requests, such as AWS, Heroku, etc. Then, add the WebSocket path to GTFO's `environment/config.json` as `"acheronHost": "ws://name-of-host"`.
+Deploy Acheron somewhere where it can accept HTTP requests, such as AWS, Heroku, etc. Then, add the WebSocket path to GTFO's `environment/config.json` as `"proxyHost": "ws://name-of-host"`.
