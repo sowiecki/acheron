@@ -1,9 +1,9 @@
 /* eslint new-cap:0, no-console:0 */
 /* globals console */
 import WebSocket from 'ws';
-import { forEach } from 'lodash';
+import { forEach, filter } from 'lodash';
 
-import { HANDSHAKE, RECONNECTED } from '../constants';
+import { HANDSHAKE, RECONNECTED, FORWARD } from '../constants';
 import { getWebSocketKey } from '../utils';
 
 /**
@@ -22,10 +22,13 @@ const flushClient = (client) => delete clients[getWebSocketKey(client)];
  * Overwrites clients from same origin.
  * @param {object} client WebSocket properties for client.
  */
-const registerClient = (client) => {
+const registerClient = (client, clientId) => {
   const origin = getWebSocketKey(client);
 
-  clients[origin] = Object.assign(client);
+  clients[origin] = {
+    id: clientId,
+    ...client
+  };
 };
 
 const socketController = {
@@ -80,11 +83,19 @@ const socketController = {
   handle(event, payload, client) {
     const handlers = {
       [HANDSHAKE]() {
-        registerClient(client);
+        registerClient(client, payload.id);
       },
 
       [RECONNECTED]() {
-        registerClient(client);
+        registerClient(client, payload.id);
+      },
+
+      [FORWARD]() {
+        const clientsWithId = filter(clients, ({ id }) => id === payload.id);
+
+        forEach(clientsWithId, (ws) => {
+          socketController.send(event, payload, ws);
+        });
       },
 
       sendToAll() {
