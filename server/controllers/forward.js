@@ -2,7 +2,7 @@ import socketController from './socket';
 import { FORWARD } from '../constants';
 
 const forwardController = {
-  handlePing(req, res) {
+  handle(req, res) {
     const { id } = req.headers;
 
     socketController.handle(FORWARD, { id });

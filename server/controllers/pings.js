@@ -2,7 +2,7 @@ import socketController from './socket';
 import { NEW_ROOM_PING } from '../constants';
 
 const pingsController = {
-  handlePing(req, res) {
+  handle(req, res) {
     const { id, anchor } = req.headers;
 
     socketController.handle(NEW_ROOM_PING, { id, anchor });

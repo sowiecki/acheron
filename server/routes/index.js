@@ -10,7 +10,7 @@ const router = express.Router();
 router.post('/api/forward', (req, res) => forwardController.handle(req, res));
 
 /* Room pings */
-router.post('/api/ping', (req, res) => pingsController.handlePing(req, res));
+router.post('/api/ping', (req, res) => pingsController.handle(req, res));
 
 /* Serve client - must be last route */
 router.get('*', (req, res) => res.send(applicationView));
