@@ -1,7 +1,7 @@
 /* eslint new-cap:0, no-console:0 */
 /* globals console */
 import WebSocket from 'ws';
-import { forEach, filter } from 'lodash';
+import { forEach, filter, merge } from 'lodash';
 
 import { HANDSHAKE, RECONNECTED, FORWARD } from '../constants';
 import { getWebSocketKey } from '../utils';
@@ -25,10 +25,9 @@ const flushClient = (client) => delete clients[getWebSocketKey(client)];
 const registerClient = (client, clientId) => {
   const origin = getWebSocketKey(client);
 
-  clients[origin] = {
-    id: clientId,
-    ...client
-  };
+  clients[origin] = merge(client, {
+    id: clientId
+  });
 };
 
 const socketController = {
