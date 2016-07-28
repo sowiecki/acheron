@@ -1,7 +1,7 @@
 /* eslint new-cap:0, no-console:0 */
 /* globals console */
 import WebSocket from 'ws';
-import { forEach, filter, merge } from 'lodash';
+import { get, forEach, filter, merge } from 'lodash';
 
 import { HANDSHAKE, RECONNECTED, FORWARD } from '../constants';
 import { getWebSocketKey } from '../utils';
@@ -80,17 +80,19 @@ const socketController = {
    * @returns {undefined}
    */
   handle(event, payload, client) {
+    const payloadId = get(payload, 'id');
+
     const handlers = {
       [HANDSHAKE]() {
-        registerClient(client, payload.id);
+        registerClient(client, payloadId);
       },
 
       [RECONNECTED]() {
-        registerClient(client, payload.id);
+        registerClient(client, payloadId);
       },
 
       [FORWARD]() {
-        const clientsWithId = filter(clients, ({ id }) => id === payload.id);
+        const clientsWithId = filter(clients, ({ id }) => id === payloadId);
 
         forEach(clientsWithId, (ws) => {
           socketController.send(event, payload, ws);
