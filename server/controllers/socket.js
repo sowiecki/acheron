@@ -80,19 +80,19 @@ const socketController = {
    * @returns {undefined}
    */
   handle(event, payload, client) {
-    const payloadId = get(payload, 'id');
+    const clientId = get(payload, 'id');
 
     const handlers = {
       [HANDSHAKE]() {
-        registerClient(client, payloadId);
+        registerClient(client, clientId);
       },
 
       [RECONNECTED]() {
-        registerClient(client, payloadId);
+        registerClient(client, clientId);
       },
 
       [FORWARD]() {
-        const clientsWithId = filter(clients, ({ id }) => id === payloadId);
+        const clientsWithId = filter(clients, ({ id }) => id === clientId);
 
         forEach(clientsWithId, (ws) => {
           socketController.send(event, payload, ws);
