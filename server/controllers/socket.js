@@ -95,7 +95,7 @@ const socketController = {
         const clientsWithId = filter(clients, ({ id }) => id === clientId);
 
         forEach(clientsWithId, (ws) => {
-          socketController.send(event, payload, ws);
+          socketController.send(payload.event, payload, ws);
         });
       },
 

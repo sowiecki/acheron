@@ -3,9 +3,15 @@ import { FORWARD } from '../constants';
 
 const forwardController = {
   handle(req, res) {
-    const { id } = req.headers;
+    const { id, event } = req.headers;
 
-    socketController.handle(FORWARD, { id });
+    const payload = {
+      body: req.body,
+      event,
+      id
+    };
+
+    socketController.handle(FORWARD, payload);
 
     res.json({ status: 200, message: `Forwarding payload to ${id}.` });
   }
