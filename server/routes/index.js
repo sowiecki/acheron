@@ -1,6 +1,5 @@
 /* eslint new-cap:0 */
 import express from 'express';
-import cors from 'cors';
 
 import pingsController from '../controllers/pings';
 import forwardController from '../controllers/forward';

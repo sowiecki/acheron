@@ -4,7 +4,7 @@ import { FORWARD } from '../constants';
 const forwardController = {
   handle(req, res) {
     const { id, event } = req.headers;
-console.log('foobar', id, event, req.body)
+
     const payload = {
       body: req.body,
       event,
