@@ -1,6 +1,7 @@
 export const AUTHORIZED_HEADERS = [
   'event',
   'id',
+  'payload',
   'Content-Type',
   'Authorization',
   'Content-Length',
