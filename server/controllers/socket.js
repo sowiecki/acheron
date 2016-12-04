@@ -40,10 +40,11 @@ const socketController = {
   open() {
     this.wss.on('connection', (client) => {
       const initializePayload = {
+        event: HANDSHAKE,
         message: `Acheron connection established at ${JSON.stringify(new Date())}`
       };
 
-      socketController.send(HANDSHAKE, initializePayload, client);
+      socketController.send(initializePayload, client);
 
       client.on('message', (data) => {
         const message = JSON.parse(data);
@@ -63,9 +64,9 @@ const socketController = {
    * @param {ws} client WebSocket object associated with specific targetted client.
    * @returns {undefined}
    */
-  send(event, payload, client) {
+  send(payload, client) {
     try {
-      client.send(JSON.stringify({ event, payload }));
+      client.send(JSON.stringify({ payload }));
     } catch (e) {
       console.log(e);
     }
@@ -95,13 +96,13 @@ const socketController = {
         const clientsWithId = filter(clients, ({ id }) => id === clientId);
 
         forEach(clientsWithId, (ws) => {
-          socketController.send(payload.event, payload, ws);
+          socketController.send(payload, ws);
         });
       },
 
       sendToAll() {
         forEach(clients, (ws) => {
-          socketController.send(event, payload, ws);
+          socketController.send(payload, ws);
         });
       }
     };
