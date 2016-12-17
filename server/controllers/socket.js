@@ -81,7 +81,7 @@ const socketController = {
    * @returns {undefined}
    */
   handle(event, payload, client) {
-    const clientId = get(payload, 'id');
+    const clientId = get(payload, 'headers.id');
 
     const handlers = {
       [HANDSHAKE]() {
