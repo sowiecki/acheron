@@ -3,11 +3,11 @@ import { NEW_ROOM_PING } from '../constants';
 
 const pingsController = {
   handle(req, res) {
-    const { id, anchor } = req.headers;
+    const { id, event, anchor } = req.headers;
 
-    socketController.handle(NEW_ROOM_PING, { id, anchor });
+    socketController.handle(NEW_ROOM_PING, { id, event, anchor });
 
-    res.json({ status: 200, message: `Ping received for ${id} at ${anchor}.` });
+    res.json({ status: 200, message: `Ping received from ${anchor} for ${id}.` });
   }
 };
 
