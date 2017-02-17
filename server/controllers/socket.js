@@ -49,7 +49,7 @@ const socketController = {
       client.on('message', (data) => {
         const message = JSON.parse(data);
 
-        socketController.handle(message.event, message.payload, client);
+        socketController.handle(message.event, message.payload, { client });
       });
 
       client.on('close', () => flushClient(client));
@@ -74,13 +74,12 @@ const socketController = {
 
   /**
    * WebSocket protocol for governing all outgoing socket communications.
-   * @param {string} event Event constant that determines handling server-side.
-   *  Sometimes passed to client.
-   * @param {object} payload Payload to send to client.
-   * @param {ws | undefined} client WebSocket object associated with specific targetted client.
+   * @param {string} event - Event constant that determines handling server-side.
+   * @param {object} payload - Payload to send to client.
+   * @param {ws | undefined} client - WebSocket object associated with specific targetted client.
    * @returns {undefined}
    */
-  handle(event, payload, client) {
+  handle(event, payload, { client, setResponse }) {
     const clientId = get(payload, 'headers.id');
 
     const handlers = {
@@ -95,15 +94,13 @@ const socketController = {
       [FORWARD]() {
         const clientsWithId = filter(clients, ({ id }) => id === clientId);
 
-        forEach(clientsWithId, (ws) => {
-          socketController.send(payload, ws);
-        });
+        forEach(clientsWithId, (ws) => socketController.send(payload, ws));
+
+        setResponse(clientsWithId);
       },
 
       sendToAll() {
-        forEach(clients, (ws) => {
-          socketController.send(payload, ws);
-        });
+        forEach(clients, (ws) => socketController.send(payload, ws));
       }
     };
 

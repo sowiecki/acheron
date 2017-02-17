@@ -1,15 +1,13 @@
-import { merge } from 'lodash';
-
 import socketController from './socket';
 import { FORWARD } from '../constants';
+import { getResponseSetter } from '../utils';
 
 const forwardController = {
   handle(req, res) {
     const { headers, body } = req;
+    const setResponse = getResponseSetter(headers, res);
 
-    socketController.handle(FORWARD, { headers, body });
-
-    res.json({ status: 200, message: `Forwarding ${headers.event}.` });
+    socketController.handle(FORWARD, { headers, body }, { setResponse });
   }
 };
 
