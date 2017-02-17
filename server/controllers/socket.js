@@ -101,6 +101,8 @@ const socketController = {
 
       sendToAll() {
         forEach(clients, (ws) => socketController.send(payload, ws));
+
+        setResponse(clients);
       }
     };
 
