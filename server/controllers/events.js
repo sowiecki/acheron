@@ -16,7 +16,8 @@ const eventsController = {
     socketController.handle(event, {
       id,
       event,
-      anchor
+      anchor,
+      particleInfo: req.body
     }, { setResponse });
   }
 };
