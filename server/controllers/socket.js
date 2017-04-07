@@ -80,7 +80,7 @@ const socketController = {
    * @returns {undefined}
    */
   handle(event, payload, { client, setResponse }) {
-    const clientId = get(payload, 'headers.id');
+    const clientId = get(payload, 'headers.id') || get(payload, 'id');
 
     const handlers = {
       [HANDSHAKE]() {
@@ -97,16 +97,10 @@ const socketController = {
         forEach(clientsWithId, (ws) => socketController.send(payload, ws));
 
         setResponse(clientsWithId);
-      },
-
-      sendToAll() {
-        forEach(clients, (ws) => socketController.send(payload, ws));
-
-        setResponse(clients);
       }
     };
 
-    return handlers[event] ? handlers[event]() : handlers.sendToAll();
+    return handlers[event] ? handlers[event]() : handlers[FORWARD]();
   }
 };
 

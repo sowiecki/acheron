@@ -9,7 +9,7 @@ const eventsMap = {
 
 const eventsController = {
   handle(req, res) {
-    const { id, anchor } = req.headers;
+    const { id, anchor, targetid } = req.headers;
     const setResponse = getResponseSetter(req.headers, res);
     const event = eventsMap[req.params.event];
 
@@ -17,6 +17,7 @@ const eventsController = {
       id,
       event,
       anchor,
+      targetId: targetid,
       particleInfo: req.body
     }, { setResponse });
   }
