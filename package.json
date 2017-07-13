@@ -16,7 +16,7 @@
     "lint": "eslint --format=node_modules/eslint-formatter-pretty --ext .js,.jsx *.js server"
   },
   "engines": {
-    "node": "^6.0.0",
+    "node": "^8.1.4",
     "npm": "^3.8.6"
   },
   "dependencies": {
