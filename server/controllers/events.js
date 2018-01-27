@@ -1,10 +1,9 @@
 import socketController from './socket';
-import { NEW_ROOM_PING, NEW_ROOM_MOTION } from '../constants';
+import { NEW_ROOM_PING } from '../constants';
 import { getResponseSetter } from '../utils';
 
 const eventsMap = {
-  ping: NEW_ROOM_PING,
-  motion: NEW_ROOM_MOTION
+  ping: NEW_ROOM_PING
 };
 
 const eventsController = {
