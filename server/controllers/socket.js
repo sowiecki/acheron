@@ -3,7 +3,7 @@
 import WebSocket from 'ws';
 import { get, forEach, filter, merge } from 'lodash';
 
-import { HANDSHAKE, RECONNECTED, FORWARD } from '../constants';
+import { HANDSHAKE, RECONNECTED, FORWARD, SOCKET_HEARTBEAT_INTERVAL } from '../constants';
 import { getWebSocketKey } from '../utils';
 
 /**
@@ -15,7 +15,7 @@ const clients = {};
  * Deletes client from stored clients hash.
  * @param {object} client WebSocket properties for client.
  */
-const flushClient = (client) => delete clients[getWebSocketKey(client)];
+const flushClient = client => delete clients[getWebSocketKey(client)];
 
 /**
  * Registers client with stored clients hash.
@@ -33,12 +33,31 @@ const registerClient = (client, clientId) => {
 const socketController = {
   initialize(server) {
     this.wss = new WebSocket.Server({ server });
+    this.wss.on('connection', ws => {
+      ws.isAlive = true;
+      ws.on('pong', () => (ws.isAlive = true));
+    });
+
+    this.monitor();
 
     this.open();
   },
 
+  // An attempt to remedy Heroku apparently dropping WebSocket connections on sleeping dynos
+  // https://www.npmjs.com/package/ws#how-to-detect-and-close-broken-connections
+  monitor() {
+    setInterval(() => {
+      this.wss.clients.forEach(ws => {
+        if (ws.isAlive === false) return ws.terminate();
+
+        ws.isAlive = false;
+        ws.ping(() => {});
+      });
+    }, SOCKET_HEARTBEAT_INTERVAL);
+  },
+
   open() {
-    this.wss.on('connection', (client) => {
+    this.wss.on('connection', client => {
       const initializePayload = {
         event: HANDSHAKE,
         message: `Acheron connection established at ${JSON.stringify(new Date())}`
@@ -46,7 +65,7 @@ const socketController = {
 
       socketController.send(initializePayload, client);
 
-      client.on('message', (data) => {
+      client.on('message', data => {
         const message = JSON.parse(data);
 
         socketController.handle(message.event, message.payload, { client });
@@ -94,7 +113,7 @@ const socketController = {
       [FORWARD]() {
         const clientsWithId = filter(clients, ({ id }) => id === clientId);
 
-        forEach(clientsWithId, (ws) => socketController.send(payload, ws));
+        forEach(clientsWithId, ws => socketController.send(payload, ws));
 
         setResponse(clientsWithId);
       }
