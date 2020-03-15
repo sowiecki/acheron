@@ -1,6 +1,7 @@
 /* eslint no-console:0 */
 /* globals console */
-import http from 'http';
+import https from 'https';
+import fs from 'fs';
 import express from 'express';
 import favicon from 'serve-favicon';
 import logger from 'morgan';
@@ -12,6 +13,8 @@ import socketController from './controllers/socket';
 import routes from './routes';
 
 const app = express();
+const key = fs.readFileSync('../key.pem');
+const cert = fs.readFileSync('../cert.pem');
 
 app.use(logger('dev'));
 app.use(favicon(`${PUBLIC_PATH}/favicon.ico`));
@@ -23,7 +26,8 @@ app.set('views', VIEWS_PATH);
 app.use('/', express.static(PUBLIC_PATH));
 app.use('/', routes);
 
-const server = http.createServer(app);
+// const server = http.createServer(app);
+const server = https.createServer({key: key, cert: cert }, app);
 
 server.listen(SERVER_PORT, (err) => {
   if (err) {
