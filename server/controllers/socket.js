@@ -51,7 +51,7 @@ const socketController = {
         if (ws.isAlive === false) return ws.terminate();
 
         ws.isAlive = false;
-        ws.ping(() => {});
+        ws.ping('ping');
       });
     }, SOCKET_HEARTBEAT_INTERVAL);
   },

@@ -26,8 +26,8 @@ router.post('/api/forward', (req, res) => forwardController.handle(req, res));
 router.post('/api/:event', (req, res) => eventsController.handle(req, res));
 
 /* AWS Healthcheck */
-router.get('/ping', (req, res) => {
-  res.status(200).send('pong');
+router.get('/health', (req, res) => {
+  res.status(200).send('hello world');
 });
 
 /* Serve client - must be last route */
