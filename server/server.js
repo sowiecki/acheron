@@ -2,6 +2,8 @@
 /* globals console */
 import https from 'https';
 import fs from 'fs';
+import path from 'path';
+import cors from 'cors';
 import express from 'express';
 import favicon from 'serve-favicon';
 import logger from 'morgan';
@@ -13,8 +15,8 @@ import socketController from './controllers/socket';
 import routes from './routes';
 
 const app = express();
-const key = fs.readFileSync('../key.pem');
-const cert = fs.readFileSync('../cert.pem');
+const key = fs.readFileSync(path.resolve(__dirname, '../key.pem'));
+const cert = fs.readFileSync(path.resolve(__dirname, '../cert.pem'));
 
 app.use(logger('dev'));
 app.use(favicon(`${PUBLIC_PATH}/favicon.ico`));
@@ -35,7 +37,7 @@ server.listen(SERVER_PORT, (err) => {
     return;
   }
 
-  console.log(`Listening at http://localhost:${SERVER_PORT}`);
+  console.log(`Listening at https://localhost:${SERVER_PORT}`);
 });
 
 socketController.initialize(server);

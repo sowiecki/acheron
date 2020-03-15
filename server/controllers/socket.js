@@ -32,7 +32,7 @@ const registerClient = (client, clientId) => {
 
 const socketController = {
   initialize(server) {
-    this.wss = new WebSocket.Server({ server });
+    this.wss = new WebSocket.Server({ server, port: 5001 });
     this.wss.on('connection', ws => {
       ws.isAlive = true;
       ws.on('pong', () => (ws.isAlive = true));

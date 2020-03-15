@@ -13,7 +13,11 @@ router.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', req.headers.origin);
   res.header('Access-Control-Allow-Methods', AUTHORIZED_METHODS);
   res.header('Access-Control-Allow-Headers', AUTHORIZED_HEADERS);
-  next();
+  if ('OPTIONS' == req.method) {
+    res.sendStatus(200);
+  } else {
+    next();
+  }
 });
 
 router.post('/api/forward', (req, res) => forwardController.handle(req, res));
