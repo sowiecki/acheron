@@ -31,7 +31,7 @@
     "cookie-parser": "^1.4.0",
     "cors": "^2.7.1",
     "express": "^4.13.3",
-    "file-loader": "^0.8.5",
+    "file-loader": "^6.2.0",
     "json-loader": "^0.5.4",
     "jsonschema": "^1.1.0",
     "lodash": "^4.17.2",
