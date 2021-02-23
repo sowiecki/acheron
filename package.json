@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "babel-core": "^6.7.4",
-    "babel-eslint": "^6.0.2",
+    "babel-eslint": "^10.1.0",
     "eslint": "^2.8.0",
     "eslint-config-airbnb": "^8.0.0",
     "eslint-formatter-pretty": "^0.2.0",
