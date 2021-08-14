@@ -14,6 +14,7 @@ env
 .env
 key.pem
 cert.pem
+cert.perm
 
 # Runtime data
 pids
