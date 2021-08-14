@@ -11,6 +11,9 @@ secrets
 environment/*.json
 environment/assets/*.png
 env
+.env
+key.pem
+cert.pem
 
 # Runtime data
 pids

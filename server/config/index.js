@@ -10,3 +10,5 @@ export const SERVER_PORT = process.env.PORT || 5000;
 const ROOT = '../';
 export const PUBLIC_PATH = path.join(__dirname, ROOT, 'public');
 export const VIEWS_PATH = path.join(__dirname, ROOT, 'views');
+
+export const DOMAIN = process.env.DOMAIN;
