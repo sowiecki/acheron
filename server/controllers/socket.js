@@ -15,7 +15,11 @@ const clients = {};
  * Deletes client from stored clients hash.
  * @param {object} client WebSocket properties for client.
  */
-const flushClient = client => delete clients[getWebSocketKey(client)];
+const flushClient = client => {
+  console.log('Flushing client.');
+
+  delete clients[getWebSocketKey(client)];
+};
 
 /**
  * Registers client with stored clients hash.
@@ -23,6 +27,8 @@ const flushClient = client => delete clients[getWebSocketKey(client)];
  * @param {object} client WebSocket properties for client.
  */
 const registerClient = (client, clientId) => {
+  console.log(`Client conntented ${clientId}.`);
+
   const origin = getWebSocketKey(client);
 
   clients[origin] = merge(client, {
@@ -58,6 +64,7 @@ const socketController = {
 
   open() {
     this.wss.on('connection', client => {
+
       const initializePayload = {
         event: HANDSHAKE,
         message: `Acheron connection established at ${JSON.stringify(new Date())}`
@@ -72,6 +79,8 @@ const socketController = {
       });
 
       client.on('close', () => flushClient(client));
+
+      client.on('error', console.error);
     });
   },
 
