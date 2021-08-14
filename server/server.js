@@ -15,9 +15,7 @@ import socketController from './controllers/socket';
 import routes from './routes';
 
 const app = express();
-
-const cert = fs.readFileSync(path.resolve(__dirname, `/etc/letsencrypt/live/${DOMAIN}/fullchain.pem`)).toString();
-const key = fs.readFileSync(path.resolve(__dirname, `/etc/letsencrypt/live/${DOMAIN}/privkey.pem`)).toString();
+let server;
 
 app.use(logger('dev'));
 app.use(favicon(`${PUBLIC_PATH}/favicon.ico`));
@@ -29,8 +27,17 @@ app.set('views', VIEWS_PATH);
 app.use('/', express.static(PUBLIC_PATH));
 app.use('/', routes);
 
+console.log('Looking for domain...');
+if (DOMAIN) {
+  console.log(`Found ${DOMAIN}, loading certs.`);
+  const cert = fs.readFileSync(path.resolve(__dirname, `/etc/letsencrypt/live/${DOMAIN}/fullchain.pem`)).toString();
+  const key = fs.readFileSync(path.resolve(__dirname, `/etc/letsencrypt/live/${DOMAIN}/privkey.pem`)).toString();
 
-const server = https.createServer({ key, cert }, app);
+  server = https.createServer({ key, cert }, app);
+} else {
+  console.log('No domain found, falling back on http.');
+  server = http.createServer(app);
+}
 
 server.listen(SERVER_PORT, (err) => {
   if (err) {
