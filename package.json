@@ -42,7 +42,7 @@
     "rimraf": "^2.4.3",
     "serve-favicon": "^2.3.0",
     "webpack": "^5.50.0",
-    "ws": "^8.0.0"
+    "ws": "^8.2.1"
   },
   "devDependencies": {
     "babel-core": "^6.7.4",
