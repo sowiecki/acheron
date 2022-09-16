@@ -54,6 +54,6 @@
     "eslint-plugin-import": "^1.5.0",
     "eslint-plugin-jsx-a11y": "^1.0.2",
     "eslint-plugin-react": "^5.0.1",
-    "nodemon": "^2.0.12"
+    "nodemon": "^2.0.20"
   }
 }
